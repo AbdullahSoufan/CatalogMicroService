@@ -20,7 +20,7 @@ from django.urls import include, path
 from DosProject.CatalogApp import views
 
 urlpatterns = [
-    path('search/<str:topic_name>/', CatalogApp.views.bookList.as_view()),
+    path('search/<str:topic_name>/', views.bookList.as_view()),
     path('info/<int:id>/', views.bookList2.as_view()),
     path('decrease/<int:pk>/', views.bookList2.as_view()),
     path('admin/', admin.site.urls),
