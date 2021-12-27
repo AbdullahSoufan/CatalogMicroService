@@ -1,3 +1,4 @@
+import requests
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404
@@ -13,6 +14,12 @@ class bookList(APIView) :
         serializer = bookSerializer(books_with_specific_topic, many=True)
         return Response(serializer.data)
 
+    def put(self, request, pk):
+        book = Book.objects.get(id=pk)
+        book.quantity -= 1
+        book.save()
+
+
 class bookList2(APIView):
     def get(self,request,id):
         certain_book = Book.objects.all().filter(id=id)
@@ -22,3 +29,8 @@ class bookList2(APIView):
         certain_book = Book.objects.get(id=pk)
         certain_book.quantity -= 1
         certain_book.save()
+        requests.put('http://127.0.0.1:8005/invalidate/' + str(pk) + '/', timeout=5)
+        requests.put('http://127.0.0.1:8003/update/' + str(pk) + '/', timeout=10)
+
+
+
